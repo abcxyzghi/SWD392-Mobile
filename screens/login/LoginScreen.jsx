@@ -1,4 +1,3 @@
-
 import React from 'react'
 import Login from '@/components/login/Login'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

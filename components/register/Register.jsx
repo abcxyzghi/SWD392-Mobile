@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { FormControl, FormControlError, FormControlErrorIcon, FormControlErrorText, FormControlHelper, FormControlHelperText, FormControlLabel, FormControlLabelText } from '@/components/ui/form-control'
 import { VStack } from '@/components/ui/vstack'
@@ -8,10 +8,7 @@ import { Button, ButtonText } from '@/components/ui/button'
 import { AlertCircleIcon, EyeIcon, EyeOffIcon } from '@/components/ui/icon'
 import { useNavigation } from 'expo-router'
 import * as Yup from 'yup';
-
-
-
-
+import api from '@/api/axiosInstance'
 
 const styles = StyleSheet.create({
     view: {
@@ -52,7 +49,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         display: "flex",
-        justifyContent:"center"
+        justifyContent: "center"
     },
 
 })
@@ -63,14 +60,15 @@ const Register = () => {
     const [email, setEmail] = useState("")
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
+    const [rePassword, setRePassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const [errors, setErrors] = useState({
         username: '',
         email: '',
         phone: '',
         password: '',
+        rePassword: '',
     });
-
 
 
     const validationSchema = Yup.object().shape({
@@ -78,6 +76,9 @@ const Register = () => {
         email: Yup.string().email('Invalid email').required('Email is not valid'),
         phone: Yup.string().required('Phone is required'),
         password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+        rePassword: Yup.string()
+            .oneOf([Yup.ref('password')], 'Passwords must match')  // Ensures passwords match
+            .required('Please confirm your password')
     });
 
 
@@ -89,10 +90,27 @@ const Register = () => {
     }
     const handleSubmit = async () => {
         try {
-            // Validate form data with Yup
-            await validationSchema.validate({ username, email, phone, password }, { abortEarly: false });
-            setErrors({});  // Clear previous errors if form is valid
+            await validationSchema.validate({ username, email, phone, password, rePassword }, { abortEarly: false });
+            try {
+                const res = await api.post("register", {
+                    username: username,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    role: "USER"
+                })
+                setUsername("");
+                setEmail("");
+                setPhone("");
+                setPassword("");
+                setRePassword("");
+                console.log(res.data)
+            } catch (error) {
+                console.log(error)
+            }
+            setErrors({});
             Alert.alert("Success", "Registration is valid");
+            navigate.navigate("LoginScreen")
         } catch (err) {
             // Check if the error is a Yup validation error
             if (err instanceof Yup.ValidationError) {
@@ -107,7 +125,7 @@ const Register = () => {
     }
     return (
 
-        <View style={{flex:1}}>
+        <View style={{ flex: 1 }}>
             <View style={styles.title}>
                 <Text style={styles.titleContent}>Welcome Register</Text>
             </View>
@@ -186,6 +204,7 @@ const Register = () => {
                             )}
                         </FormControl>
                         <FormControl
+                            className="pb-4"
                             isInvalid={!!errors.password}
                             size="md"
                             isDisabled={false}
@@ -210,6 +229,34 @@ const Register = () => {
                                 <FormControlError>
                                     <FormControlErrorIcon as={AlertCircleIcon} />
                                     <FormControlErrorText>{errors.password}</FormControlErrorText>
+                                </FormControlError>
+                            )}
+                        </FormControl>
+                        <FormControl
+                            isInvalid={!!errors.rePassword}
+                            size="md"
+                            isDisabled={false}
+                            isReadOnly={false}
+                            isRequired={false}
+                        >
+                            <VStack space="xs">
+                                <Text className="text-typography-500 leading-1">RePassword</Text>
+                                <Input className="text-center">
+                                    <InputField value={rePassword}
+                                        onChangeText={(e) => setRePassword(e)} type={showPassword ? "text" : "password"} />
+                                    <InputSlot className="pr-3" onPress={handleState}>
+                                        {/* EyeIcon, EyeOffIcon are both imported from 'lucide-react-native' */}
+                                        <InputIcon
+                                            as={showPassword ? EyeIcon : EyeOffIcon}
+                                            className="text-darkBlue-500"
+                                        />
+                                    </InputSlot>
+                                </Input>
+                            </VStack>
+                            {errors.rePassword && (
+                                <FormControlError>
+                                    <FormControlErrorIcon as={AlertCircleIcon} />
+                                    <FormControlErrorText>{errors.rePassword}</FormControlErrorText>
                                 </FormControlError>
                             )}
                         </FormControl>

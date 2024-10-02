@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Alert, Keyboard } from 'react-native'
 import React, { useState } from 'react'
 import { FormControl, FormControlError, FormControlErrorIcon, FormControlErrorText, FormControlHelper, FormControlHelperText } from '@/components/ui/form-control'
 import { VStack } from '@/components/ui/vstack'
@@ -8,6 +8,9 @@ import { Button, ButtonText } from '@/components/ui/button'
 import { AlertCircleIcon, EyeIcon, EyeOffIcon } from '@/components/ui/icon'
 import { GoogleSocialButton } from 'react-native-social-buttons'
 import {useNavigation } from 'expo-router'
+import api from '@/api/axiosInstance'
+import { useDispatch } from 'react-redux'
+import { login } from '@/redux/features/authSlice'
 
 const styles = StyleSheet.create({
     view: {
@@ -45,20 +48,37 @@ const styles = StyleSheet.create({
 
 })
 const Login = () => {
+    const dispatch = useDispatch();
 
     const navigate = useNavigation()
     const [email, setEmail ] = useState("")
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
- 
+   
+    
     const handleState = () => {
         setShowPassword((showState) => {
             return !showState
         })
     }
 
-    const handleSubmit = () => {
-      alert(email+","+password)
+    const handleSubmit = async () => {
+        console.log(email)
+        console.log(password)
+      try {
+        const res = await api.post("login",{
+            email: email,
+            password: password 
+        })
+        Keyboard.dismiss()
+        setEmail("")
+        setPassword("")
+        dispatch(login(res.data))
+        Alert.alert("Success", "Login Successfully");
+        navigate.navigate('HomeScreen')
+      } catch (error) {
+        console.log(error)
+      }
     }
     return (
         <View style={styles.view}>
