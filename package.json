@@ -51,6 +51,11 @@
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
     "@reduxjs/toolkit": "^2.2.7",
+    "@tamagui/avatar": "^1.112.22",
+    "@tamagui/babel-plugin": "^1.112.22",
+    "@tamagui/config": "^1.112.22",
+    "@tamagui/core": "^1.112.22",
+    "@tamagui/image": "^1.112.22",
     "axios": "^1.7.7",
     "babel-plugin-module-resolver": "^5.0.2",
     "expo": "~51.0.28",
@@ -77,6 +82,7 @@
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "tailwindcss": "^3.4.13",
+    "tamagui": "^1.112.22",
     "yup": "^1.4.0"
   },
   "devDependencies": {
