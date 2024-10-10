@@ -9,9 +9,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useFocusEffect, useNavigation } from "expo-router";
-
-
+import { useNavigation } from "expo-router";
 import axios from "axios";
 import Header from "@/components/header/Header";
 import Search from "@/components/search/Search";
@@ -82,7 +80,7 @@ export const HomeScreen = () => {
           contentContainerStyle={{ paddingBottom: insets.bottom + 65 }}
           renderItem={({ item }) => (
             <Pressable
-              // onPress={() => navigation.navigate("DetailScreen", { item })}
+              onPress={() => navigation.navigate("DetailScreen", { item })}
               style={{flex:1}}
             >
               <CardItem item={item} />

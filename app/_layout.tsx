@@ -15,6 +15,8 @@ import {store, persistor} from "../redux/store"
 import {  TamaguiProvider } from '@tamagui/core';
 import { HomeScreen } from '@/screens/home/HomeScreen';
 import { tamaguiConfig } from '@/tamagui.config';
+import ForgotPassword from '@/screens/forgotPassword/ForgotPassword';
+import ProductDetail from '@/screens/productDetail/ProductDetail';
 
 
 const Stack = createStackNavigator();
@@ -44,9 +46,11 @@ export default function RootLayout() {
     <GluestackUIProvider>
       <NavigationContainer independent={true}>
         <Stack.Navigator initialRouteName='HomeScreen'>
-          <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false ,title:"Login"}} />
+          <Stack.Screen name="ForgotPasswordScreen" component={ForgotPassword} options={{ title:"Forgot Password" }} />
           <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }}/>
+          <Stack.Screen name="DetailScreen" component={ProductDetail} options={{ headerShown: false }}/>
         </Stack.Navigator>
       </NavigationContainer>
     </GluestackUIProvider>

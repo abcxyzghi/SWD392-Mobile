@@ -11,6 +11,7 @@ import {useNavigation } from 'expo-router'
 import api from '@/api/axiosInstance'
 import { useDispatch } from 'react-redux'
 import { login } from '@/redux/features/authSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     view: {
@@ -74,6 +75,8 @@ const Login = () => {
         setEmail("")
         setPassword("")
         dispatch(login(res.data))
+        console.log(res.data.token)
+        AsyncStorage.setItem("token",res.data.token)
         Alert.alert("Success", "Login Successfully");
         navigate.navigate('HomeScreen')
       } catch (error) {
@@ -112,7 +115,7 @@ const Login = () => {
                             </Input>
                         </VStack>
                         <View >
-                            <Text onPress={() => alert("not fount")} style={{ fontWeight: 600 }}>Forgot Password</Text>
+                            <Text onPress={() => navigate.navigate("ForgotPasswordScreen")} style={{ fontWeight: 600 }}>Forgot Password</Text>
                             <Button
                                 className="ml-auto"
                                 onPress={handleSubmit}
