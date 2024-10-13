@@ -97,20 +97,19 @@ const Register = () => {
                     email: email,
                     phone: phone,
                     password: password,
-                    role: "USER"
                 })
                 setUsername("");
                 setEmail("");
                 setPhone("");
                 setPassword("");
                 setRePassword("");
+                Alert.alert("Success", "Registration is valid");
+                navigate.navigate("LoginScreen")
                 console.log(res.data)
             } catch (error) {
                 console.log(error)
             }
             setErrors({});
-            Alert.alert("Success", "Registration is valid");
-            navigate.navigate("LoginScreen")
         } catch (err) {
             // Check if the error is a Yup validation error
             if (err instanceof Yup.ValidationError) {
