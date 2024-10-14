@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Alert, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, Alert, Keyboard, Image } from 'react-native'
 import React, { useState } from 'react'
 import { FormControl, FormControlError, FormControlErrorIcon, FormControlErrorText, FormControlHelper, FormControlHelperText } from '@/components/ui/form-control'
 import { VStack } from '@/components/ui/vstack'
@@ -49,9 +49,11 @@ const styles = StyleSheet.create({
 
 })
 const Login = () => {
+
     const dispatch = useDispatch();
 
     const navigate = useNavigation()
+    
     const [email, setEmail ] = useState("")
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
@@ -83,6 +85,7 @@ const Login = () => {
         console.log(error)
       }
     }
+
     return (
         <View style={styles.view}>
             <View style={styles.title}>
@@ -126,6 +129,7 @@ const Login = () => {
                     </VStack>
                 </FormControl>
             </View>
+
 
             <View style={styles.loginGG}>
                 <GoogleSocialButton onPress={() => { }} buttonViewStyle={styles.buttonGG} />
