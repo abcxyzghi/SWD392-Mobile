@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-function SettingScreen() {
+function ProfileScreen() {
   return (
     <View>
     <Text>abcd</Text>
@@ -8,4 +8,4 @@ function SettingScreen() {
   )
 }
 
-export default SettingScreen
+export default ProfileScreen
