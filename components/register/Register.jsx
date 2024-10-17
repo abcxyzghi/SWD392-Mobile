@@ -81,8 +81,6 @@ const Register = () => {
             .required('Please confirm your password')
     });
 
-
-
     const handleState = () => {
         setShowPassword((showState) => {
             return !showState

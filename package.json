@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@expo/html-elements": "^0.4.2",
-    "@expo/vector-icons": "^14.0.2",
+    "@expo/vector-icons": "^14.0.4",
     "@gluestack-ui/accordion": "^1.0.7",
     "@gluestack-ui/actionsheet": "^0.2.45",
     "@gluestack-ui/alert": "^0.1.15",
@@ -48,6 +48,7 @@
     "@gluestack-ui/tooltip": "^0.1.33",
     "@legendapp/motion": "^2.4.0",
     "@react-native-async-storage/async-storage": "^2.0.0",
+    "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
     "@reduxjs/toolkit": "^2.2.7",

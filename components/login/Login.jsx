@@ -51,9 +51,7 @@ const styles = StyleSheet.create({
 const Login = () => {
 
     const dispatch = useDispatch();
-
     const navigate = useNavigation()
-    
     const [email, setEmail ] = useState("")
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
