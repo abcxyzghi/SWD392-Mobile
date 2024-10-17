@@ -23,6 +23,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Feather from '@expo/vector-icons/Feather';
 import ProfileScreen from '@/screens/ProfileScreen/ProfileScreen';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import EditProfile from '@/screens/EditProfile/EditProfile';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator(); // Initialize the bottom tab navigator
 
@@ -34,10 +35,11 @@ const TabNavigator = () => {
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false,tabBarIcon:()=>{  return    <FontAwesome name="home" size={24} color="black" />
 }  }} />
-      <Tab.Screen name="Settings" component={SettingScreen} options={{ headerShown: false,tabBarIcon:()=>{  return   <Feather name="settings" size={24} color="black" />
-}  }} />
  <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false,tabBarIcon:()=>{  return   <AntDesign name="user" size={24} color="black" />
 }  }} />
+      <Tab.Screen name="Settings" component={SettingScreen} options={{ headerShown: false,tabBarIcon:()=>{  return   <Feather name="settings" size={24} color="black" />
+}  }} />
+
       {/* Add more tabs as needed */}
     </Tab.Navigator>
   ); 
@@ -70,6 +72,7 @@ export default function RootLayout() {
                 <Stack.Screen name="ForgotPasswordScreen" component={ForgotPassword} options={{ title: "Forgot Password" }} />
                 <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="HomeScreen" component={TabNavigator} options={{ headerShown: false }}/>
+
               </Stack.Navigator>
             </NavigationContainer>
           </GluestackUIProvider>
