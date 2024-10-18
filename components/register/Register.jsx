@@ -9,7 +9,7 @@ import { AlertCircleIcon, EyeIcon, EyeOffIcon } from '@/components/ui/icon'
 import { useNavigation } from 'expo-router'
 import * as Yup from 'yup';
 import api from '@/api/axiosInstance'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const styles = StyleSheet.create({
     view: {
         width: "100%",
@@ -101,8 +101,10 @@ const Register = () => {
                 setPhone("");
                 setPassword("");
                 setRePassword("");
+                console.log(res.data.token)
+                AsyncStorage.setItem("token",res.data.token)
                 Alert.alert("Success", "Registration is valid");
-                navigate.navigate("LoginScreen")
+                navigate.navigate("HomeScreen")
                 console.log(res.data)
             } catch (error) {
                 console.log(error)

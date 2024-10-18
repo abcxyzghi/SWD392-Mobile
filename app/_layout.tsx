@@ -67,12 +67,11 @@ export default function RootLayout() {
         <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
           <GluestackUIProvider>
             <NavigationContainer independent={true}>
-              <Stack.Navigator initialRouteName="HomeScreen">
+              <Stack.Navigator initialRouteName="LoginScreen">
                 <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false, title: "Login" }} />
                 <Stack.Screen name="ForgotPasswordScreen" component={ForgotPassword} options={{ title: "Forgot Password" }} />
                 <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="HomeScreen" component={TabNavigator} options={{ headerShown: false }}/>
-
               </Stack.Navigator>
             </NavigationContainer>
           </GluestackUIProvider>
