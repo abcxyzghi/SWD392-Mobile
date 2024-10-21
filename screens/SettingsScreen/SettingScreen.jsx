@@ -1,9 +1,27 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Switch, ScrollView, SafeAreaView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import { useNavigation } from '@react-navigation/native'; // Import navigation
 
 const SettingsScreen = () => {
   const [isNotificationsEnabled, setNotificationsEnabled] = useState(false);
   const [isDarkThemeEnabled, setDarkThemeEnabled] = useState(false);
+  const navigation = useNavigation(); // Initialize navigation
+
+  // Function to handle logout
+  const handleLogout = async () => {
+    try {
+      // Clear any stored user data (like authentication token)
+      await AsyncStorage.removeItem('token');
+      
+      alert('Successfully logged out.');
+
+      // Navigate to login screen
+      navigation.replace('LoginScreen');
+    } catch (error) {
+      alert('Error logging out: ' + error.message);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -38,7 +56,7 @@ const SettingsScreen = () => {
           <Text style={styles.settingText}>Terms of Service</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.settingContainer, styles.logoutButton]} onPress={() => alert('Log Out')}>
+        <TouchableOpacity style={[styles.settingContainer, styles.logoutButton]} onPress={handleLogout}>
           <Text style={[styles.settingText, styles.logoutText]}>Log Out</Text>
         </TouchableOpacity>
       </ScrollView>
