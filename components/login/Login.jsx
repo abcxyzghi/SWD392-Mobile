@@ -12,6 +12,8 @@ import api from '@/api/axiosInstance'
 import { useDispatch } from 'react-redux'
 import { login } from '@/redux/features/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Yup from 'yup'
+import { Formik } from 'formik'
 
 const styles = StyleSheet.create({
     view: {
@@ -48,41 +50,38 @@ const styles = StyleSheet.create({
     }
 
 })
+// Validation schema using Yup
+const LoginSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+})
+
 const Login = () => {
 
     const dispatch = useDispatch();
-    const navigate = useNavigation()
-    const [email, setEmail ] = useState("")
-    const [password, setPassword] = useState("")
-    const [showPassword, setShowPassword] = useState(false)
-   
-    
-    const handleState = () => {
-        setShowPassword((showState) => {
-            return !showState
-        })
-    }
+    const navigate = useNavigation();
+    const [showPassword, setShowPassword] = useState(false);
 
-    const handleSubmit = async () => {
-        console.log(email)
-        console.log(password)
-      try {
-        const res = await api.post("login",{
-            email: email,
-            password: password 
-        })
-        Keyboard.dismiss()
-        setEmail("")
-        setPassword("")
-        dispatch(login(res.data))
-        console.log(res.data.token)
-        AsyncStorage.setItem("token",res.data.token)
-        Alert.alert("Success", "Login Successfully");
-        navigate.navigate('HomeScreen')
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    const handleState = () => {
+        setShowPassword((showState) => !showState);
+    };
+
+    const handleSubmit = async (values) => {
+        try {
+            const res = await api.post("login", {
+                email: values.email,
+                password: values.password
+            });
+            Keyboard.dismiss();
+            dispatch(login(res.data));
+            AsyncStorage.setItem("token", res.data.token);
+            Alert.alert("Success", "Login Successfully");
+            navigate.navigate('HomeScreen');
+        } catch (error) {
+            console.log(error);
+            Alert.alert("Error", "Login failed. Please check your credentials.");
+        }
+    };
 
     return (
         <View style={styles.view}>
@@ -90,55 +89,74 @@ const Login = () => {
                 <Text style={styles.titleContent}>Welcome Fedutoy</Text>
             </View>
 
-            <View>
-                <FormControl className="p-4 border rounded-lg border-outline-300">
-                    <VStack space="xl">
-                        <Heading className="text-typography-900 leading-3 pt-2">Login</Heading>
-                        <VStack space="xs">
-                            <Text className="text-typography-500 leading-1">Email</Text>
-                            <Input>
-                                <InputField value={email}
-                                    onChangeText={(e) => setEmail(e)} type="text" />
-                            </Input>
-                        </VStack>
-                        <VStack space="xs">
-                            <Text className="text-typography-500 leading-1">Password</Text>
-                            <Input className="text-center">
-                                <InputField value={password}
-                                    onChangeText={(e) => setPassword(e)} type={showPassword ? "text" : "password"} />
-                                <InputSlot className="pr-3" onPress={handleState}>
-                                    {/* EyeIcon, EyeOffIcon are both imported from 'lucide-react-native' */}
-                                    <InputIcon
-                                        as={showPassword ? EyeIcon : EyeOffIcon}
-                                        className="text-darkBlue-500"
-                                    />
-                                </InputSlot>
-                            </Input>
-                        </VStack>
-                        <View >
-                            <Text onPress={() => navigate.navigate("ForgotPasswordScreen")} style={{ fontWeight: 600 }}>Forgot Password</Text>
-                            <Button
-                                className="ml-auto"
-                                onPress={handleSubmit}
-                            >
-                                <ButtonText className="text-typography-0">Login</ButtonText>
-                            </Button>
-                        </View>
-                    </VStack>
-                </FormControl>
-            </View>
+            <Formik
+                initialValues={{ email: '', password: '' }}
+                validationSchema={LoginSchema}
+                onSubmit={handleSubmit}
+            >
+                {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                    <View>
+                        <FormControl className="p-4 border rounded-lg border-outline-300">
+                            <VStack space="xl">
+                                <Heading className="text-typography-900 leading-3 pt-2">Login</Heading>
 
+                                <VStack space="xs">
+                                    <Text className="text-typography-500 leading-1">Email</Text>
+                                    <Input>
+                                        <InputField
+                                            value={values.email}
+                                            onChangeText={handleChange('email')}
+                                            onBlur={handleBlur('email')}
+                                            type="text"
+                                        />
+                                    </Input>
+                                    {errors.email && touched.email && (
+                                        <Text style={{ color: 'red' }}>{errors.email}</Text>
+                                    )}
+                                </VStack>
+
+                                <VStack space="xs">
+                                    <Text className="text-typography-500 leading-1">Password</Text>
+                                    <Input>
+                                        <InputField
+                                            value={values.password}
+                                            onChangeText={handleChange('password')}
+                                            onBlur={handleBlur('password')}
+                                            type={showPassword ? "text" : "password"}
+                                        />
+                                        <InputSlot className="pr-3" onPress={handleState}>
+                                            <InputIcon
+                                                as={showPassword ? EyeIcon : EyeOffIcon}
+                                                className="text-darkBlue-500"
+                                            />
+                                        </InputSlot>
+                                    </Input>
+                                    {errors.password && touched.password && (
+                                        <Text style={{ color: 'red' }}>{errors.password}</Text>
+                                    )}
+                                </VStack>
+
+                                <View>
+                                    <Text onPress={() => navigate.navigate("ForgotPasswordScreen")} style={{ fontWeight: 600 }}>Forgot Password</Text>
+                                    <Button className="ml-auto" onPress={handleSubmit}>
+                                        <ButtonText className="text-typography-0">Login</ButtonText>
+                                    </Button>
+                                </View>
+                            </VStack>
+                        </FormControl>
+                    </View>
+                )}
+            </Formik>
 
             <View style={styles.loginGG}>
                 <GoogleSocialButton onPress={() => { }} buttonViewStyle={styles.buttonGG} />
             </View>
             <View style={styles.register}>
                 <Text>Don't have an Account? </Text>
-                <Text onPress={()=> navigate.navigate("RegisterScreen")} style={{ fontWeight: 600 }}>Register</Text>               
+                <Text onPress={() => navigate.navigate("RegisterScreen")} style={{ fontWeight: 600 }}>Register</Text>
             </View>
-
         </View>
-    )
-}
+    );
+};
 
 export default Login
