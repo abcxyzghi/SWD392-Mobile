@@ -7,7 +7,7 @@ import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input'
 import { Button, ButtonText } from '@/components/ui/button'
 import { AlertCircleIcon, EyeIcon, EyeOffIcon } from '@/components/ui/icon'
 import { GoogleSocialButton } from 'react-native-social-buttons'
-import {useNavigation } from 'expo-router'
+import { useNavigation } from 'expo-router'
 import api from '@/api/axiosInstance'
 import { useDispatch } from 'react-redux'
 import { login } from '@/redux/features/authSlice'
@@ -50,9 +50,10 @@ const styles = StyleSheet.create({
     }
 
 })
+
 // Validation schema using Yup
 const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
+    username: Yup.string().required('Username is required'),
     password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 })
 
@@ -69,7 +70,7 @@ const Login = () => {
     const handleSubmit = async (values) => {
         try {
             const res = await api.post("login", {
-                email: values.email,
+                username: values.username,
                 password: values.password
             });
             Keyboard.dismiss();
@@ -90,7 +91,7 @@ const Login = () => {
             </View>
 
             <Formik
-                initialValues={{ email: '', password: '' }}
+                initialValues={{ username: '', password: '' }}
                 validationSchema={LoginSchema}
                 onSubmit={handleSubmit}
             >
@@ -101,17 +102,17 @@ const Login = () => {
                                 <Heading className="text-typography-900 leading-3 pt-2">Login</Heading>
 
                                 <VStack space="xs">
-                                    <Text className="text-typography-500 leading-1">Email</Text>
+                                    <Text className="text-typography-500 leading-1">Username</Text>
                                     <Input>
                                         <InputField
-                                            value={values.email}
-                                            onChangeText={handleChange('email')}
-                                            onBlur={handleBlur('email')}
+                                            value={values.username}
+                                            onChangeText={handleChange('username')}
+                                            onBlur={handleBlur('username')}
                                             type="text"
                                         />
                                     </Input>
-                                    {errors.email && touched.email && (
-                                        <Text style={{ color: 'red' }}>{errors.email}</Text>
+                                    {errors.username && touched.username && (
+                                        <Text style={{ color: 'red' }}>{errors.username}</Text>
                                     )}
                                 </VStack>
 
