@@ -8,6 +8,7 @@ const LoginScreen = () => {
   return (
     <Pressable onPress={()=> (Keyboard.dismiss())} style={{ paddingTop: insets.top, paddingBottom: insets.bottom, flex: 1, paddingHorizontal: 20 }}>
       <Login />
+      
     </Pressable>
   )
 }
