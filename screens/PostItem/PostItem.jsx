@@ -1,27 +1,53 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import axios from 'axios'; // You can use fetch as well
+import { View, Text, TextInput, Button, StyleSheet, Alert, Image, TouchableOpacity } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
 const PostItem = () => {
   const [itemName, setItemName] = useState('');
   const [price, setPrice] = useState('');
-  const [type, setType] = useState('sell'); // Default type is "sell"
+  const [type, setType] = useState('sell');
+  const [imageUri, setImageUri] = useState(null);
 
-  const handlePost = () => {
-    if (itemName === '' || price === '') {
-      Alert.alert('Error', 'Please fill all the fields');
+  const handleImagePick = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert("Permission required", "Permission to access media library is required.");
       return;
     }
 
-    // Prepare the data
-    const data = {
-      itemName,
-      price,
-      type, // "sell" or "rent"
-    };
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-    // Make the post request
-    axios.post('https://your-api-url.com/post-item', data)
+    if (!result.cancelled) {
+      setImageUri(result.uri);
+    }
+  };
+
+  const handlePost = () => {
+    if (itemName === '' || price === '' || !imageUri) {
+      Alert.alert('Error', 'Please fill all fields and select an image');
+      return;
+    }
+
+    const data = new FormData();
+    data.append('itemName', itemName);
+    data.append('price', price);
+    data.append('type', type);
+    data.append('image', {
+      uri: imageUri,
+      name: 'itemImage.jpg',
+      type: 'image/jpeg',
+    });
+
+    axios.post('https://your-api-url.com/post-item', data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
       .then(response => {
         Alert.alert('Success', `Item posted successfully as ${type}`);
       })
@@ -50,6 +76,16 @@ const PostItem = () => {
         keyboardType="numeric"
       />
 
+      <Text style={styles.label}>Image:</Text>
+      <TouchableOpacity onPress={handleImagePick} style={styles.imagePicker}>
+        {imageUri ? (
+          <Image source={{ uri: imageUri }} style={styles.image} />
+        ) : (
+          <Text>Select an Image</Text>
+        )}
+      </TouchableOpacity>
+
+      <Text style={styles.label}>Post Type:</Text>
       <View style={styles.buttonContainer}>
         <Button
           title="Sell"
@@ -63,10 +99,13 @@ const PostItem = () => {
         />
       </View>
 
-      <Button
-        title="Post Item"
-        onPress={handlePost}
-      />
+      <View style={styles.postButtonContainer}>
+        <Button
+          title="Post Item"
+          onPress={handlePost}
+          color="blue"
+        />
+      </View>
     </View>
   );
 };
@@ -75,8 +114,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',  // Center content vertically
-    alignItems: 'stretch',      // Stretch to take full width of screen
+    justifyContent: 'center',
+    alignItems: 'stretch',
   },
   label: {
     fontSize: 16,
@@ -88,9 +127,26 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
+  imagePicker: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 5,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    marginVertical: 20,
+  },
+  postButtonContainer: {
     marginVertical: 20,
   },
 });
