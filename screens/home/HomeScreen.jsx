@@ -15,7 +15,7 @@ import Header from "@/components/header/Header";
 import Search from "@/components/search/Search";
 import FilterBar from "@/components/filterBar/FilterBar";
 import CardItem from "@/components/cardItem/CardItem";
-
+import api from "@/api/axiosInstance";
 const styles = StyleSheet.create({});
 
 export const HomeScreen = () => {
@@ -92,3 +92,5 @@ export const HomeScreen = () => {
     </Pressable>
   );
 }
+
+export default HomeScreen;

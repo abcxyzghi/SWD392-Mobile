@@ -75,6 +75,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    justifyContent: 'center',  // Center content vertically
+    alignItems: 'stretch',      // Stretch to take full width of screen
   },
   label: {
     fontSize: 16,
