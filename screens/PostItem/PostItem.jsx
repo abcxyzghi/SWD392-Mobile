@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,22 +11,26 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
-  SafeAreaView
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
+  SafeAreaView,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
 
 const PostItem = () => {
-  const [itemName, setItemName] = useState('');
-  const [price, setPrice] = useState('');
-  const [type, setType] = useState('sell');
+  const [itemName, setItemName] = useState("");
+  const [price, setPrice] = useState("");
+  const [type, setType] = useState("sell");
   const [imageUri, setImageUri] = useState(null);
 
   const handleImagePick = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      Alert.alert("Permission required", "Permission to access media library is required.");
+      Alert.alert(
+        "Permission required",
+        "Permission to access media library is required."
+      );
       return;
     }
 
@@ -43,29 +47,30 @@ const PostItem = () => {
   };
 
   const handlePost = () => {
-    if (itemName === '' || price === '' || !imageUri) {
-      Alert.alert('Error', 'Please fill all fields and select an image');
+    if (itemName === "" || price === "" || !imageUri) {
+      Alert.alert("Error", "Please fill all fields and select an image");
       return;
     }
 
     const data = new FormData();
-    data.append('itemName', itemName);
-    data.append('price', price);
-    data.append('type', type);
-    data.append('image', {
+    data.append("itemName", itemName);
+    data.append("price", price);
+    data.append("type", type);
+    data.append("image", {
       uri: imageUri,
-      name: 'itemImage.jpg',
-      type: 'image/jpeg',
+      name: "itemImage.jpg",
+      type: "image/jpeg",
     });
 
-    axios.post('https://your-api-url.com/post-item', data, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-      .then(response => {
-        Alert.alert('Success', `Item posted successfully as ${type}`);
+    axios
+      .post("https://your-api-url.com/post-item", data, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
-      .catch(error => {
-        Alert.alert('Error', 'There was an error posting the item');
+      .then((response) => {
+        Alert.alert("Success", `Item posted successfully as ${type}`);
+      })
+      .catch((error) => {
+        Alert.alert("Error", "There was an error posting the item");
         console.log(error);
       });
   };
@@ -92,7 +97,10 @@ const PostItem = () => {
           />
 
           <Text style={styles.label}>Image:</Text>
-          <TouchableOpacity onPress={handleImagePick} style={styles.imagePicker}>
+          <TouchableOpacity
+            onPress={handleImagePick}
+            style={styles.imagePicker}
+          >
             {imageUri ? (
               <Image source={{ uri: imageUri }} style={styles.image} />
             ) : (
@@ -104,22 +112,18 @@ const PostItem = () => {
           <View style={styles.buttonContainer}>
             <Button
               title="Sell"
-              onPress={() => setType('sell')}
-              color={type === 'sell' ? 'green' : 'gray'}
+              onPress={() => setType("sell")}
+              color={type === "sell" ? "green" : "gray"}
             />
             <Button
               title="Rent"
-              onPress={() => setType('rent')}
-              color={type === 'rent' ? 'green' : 'gray'}
+              onPress={() => setType("rent")}
+              color={type === "rent" ? "green" : "gray"}
             />
           </View>
 
           <View style={styles.postButtonContainer}>
-            <Button
-              title="Post Item"
-              onPress={handlePost}
-              color="blue"
-            />
+            <Button title="Post Item" onPress={handlePost} color="blue" />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -133,8 +137,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   scrollContainer: {
-    justifyContent: 'center',
-    alignItems: 'stretch',
+    justifyContent: "center",
+    alignItems: "stretch",
     paddingBottom: 20, // Add some bottom padding to the scroll view
   },
   label: {
@@ -143,27 +147,27 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
     borderRadius: 5,
   },
   imagePicker: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     height: 200,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginVertical: 10,
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 5,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginVertical: 20,
   },
   postButtonContainer: {
