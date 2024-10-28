@@ -1,5 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView,
+  SafeAreaView
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 
@@ -58,55 +71,59 @@ const PostItem = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Item Name:</Text>
-      <TextInput
-        style={styles.input}
-        value={itemName}
-        onChangeText={setItemName}
-        placeholder="Enter item name"
-      />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <Text style={styles.label}>Item Name:</Text>
+          <TextInput
+            style={styles.input}
+            value={itemName}
+            onChangeText={setItemName}
+            placeholder="Enter item name"
+          />
 
-      <Text style={styles.label}>Price:</Text>
-      <TextInput
-        style={styles.input}
-        value={price}
-        onChangeText={setPrice}
-        placeholder="Enter price"
-        keyboardType="numeric"
-      />
+          <Text style={styles.label}>Price:</Text>
+          <TextInput
+            style={styles.input}
+            value={price}
+            onChangeText={setPrice}
+            placeholder="Enter price"
+            keyboardType="numeric"
+          />
 
-      <Text style={styles.label}>Image:</Text>
-      <TouchableOpacity onPress={handleImagePick} style={styles.imagePicker}>
-        {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.image} />
-        ) : (
-          <Text>Select an Image</Text>
-        )}
-      </TouchableOpacity>
+          <Text style={styles.label}>Image:</Text>
+          <TouchableOpacity onPress={handleImagePick} style={styles.imagePicker}>
+            {imageUri ? (
+              <Image source={{ uri: imageUri }} style={styles.image} />
+            ) : (
+              <Text>Select an Image</Text>
+            )}
+          </TouchableOpacity>
 
-      <Text style={styles.label}>Post Type:</Text>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Sell"
-          onPress={() => setType('sell')}
-          color={type === 'sell' ? 'green' : 'gray'}
-        />
-        <Button
-          title="Rent"
-          onPress={() => setType('rent')}
-          color={type === 'rent' ? 'green' : 'gray'}
-        />
-      </View>
+          <Text style={styles.label}>Post Type:</Text>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Sell"
+              onPress={() => setType('sell')}
+              color={type === 'sell' ? 'green' : 'gray'}
+            />
+            <Button
+              title="Rent"
+              onPress={() => setType('rent')}
+              color={type === 'rent' ? 'green' : 'gray'}
+            />
+          </View>
 
-      <View style={styles.postButtonContainer}>
-        <Button
-          title="Post Item"
-          onPress={handlePost}
-          color="blue"
-        />
-      </View>
-    </View>
+          <View style={styles.postButtonContainer}>
+            <Button
+              title="Post Item"
+              onPress={handlePost}
+              color="blue"
+            />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -114,8 +131,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+  },
+  scrollContainer: {
     justifyContent: 'center',
     alignItems: 'stretch',
+    paddingBottom: 20, // Add some bottom padding to the scroll view
   },
   label: {
     fontSize: 16,
