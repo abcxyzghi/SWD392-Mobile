@@ -32,6 +32,7 @@ import EditProfile from "@/screens/EditProfile/EditProfile";
 import PostItem from "@/screens/PostItem/PostItem";
 import Entypo from "@expo/vector-icons/Entypo";
 import DetailScreen from "@/screens/Post/PostDetail";
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator(); // Initialize the bottom tab navigator
 
@@ -77,6 +78,16 @@ const TabNavigator = () => {
           headerShown: false,
           tabBarIcon: () => {
             return <Entypo name="plus" size={24} color="black" />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => {
+            return <AntDesign name="edit" size={24} color="black"  />;
           },
         }}
       />

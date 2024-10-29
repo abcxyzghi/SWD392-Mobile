@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 
-const EditProfileScreen = () => {
+const EditProfile = () => {
   // State for managing form data
   const [name, setName] = useState('John Doe');
   const [email, setEmail] = useState('johndoe@example.com');
