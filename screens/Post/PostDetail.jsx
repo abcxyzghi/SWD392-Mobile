@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { Stack, useRouter } from "expo-router";
+import { Stack, useNavigation, useRouter } from "expo-router";
 import Feather from "@expo/vector-icons/Feather";
 import { AntDesign } from "@expo/vector-icons";
 import api from "@/api/axiosInstance";
@@ -17,8 +17,7 @@ const DetailScreen = ({ route }) => {
   const { id } = route.params; // Extracting the ID from route parameters
   const [data, setData] = useState(null); // State for storing fetched data
   const [isFavorite, setIsFavorite] = useState(false); // State for favorite status
-  const router = useRouter(); // Router instance from expo-router
-
+  const navigation = useNavigation();
   // Effect to fetch data when component mounts or ID changes
   useEffect(() => {
     const fetchData = async () => {
@@ -82,7 +81,7 @@ const DetailScreen = ({ route }) => {
             <TouchableOpacity
               className="border-2 border-gray-200 bg-gray-50 rounded-lg p-1"
               onPress={() => {
-                router.back(); // Navigate back to previous screen
+                navigation.goBack(); // Navigate back to previous screen
               }}
             >
               <Feather name="arrow-left" size={24} color="black" />

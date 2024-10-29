@@ -10,7 +10,6 @@ const EditProfileScreen = () => {
   // Handler for saving profile data (this can be updated to include Firebase functionality)
   const handleSave = () => {
     alert('Profile saved');
-    // You can add save functionality here, e.g., Firebase update logic
   };
 
   return (
