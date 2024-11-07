@@ -42,7 +42,7 @@ export const HomeScreen = () => {
   // Function to fetch product data
   const fetchData = async () => {
     try {
-      const response = await api.get("post"); // Adjusted endpoint for products
+      const response = await api.get("toy"); // Adjusted endpoint for products
       setData(response.data); // Assuming response.data.payload contains the product data
     } catch (error) {
       console.error("Error fetching data:", error);

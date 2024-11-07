@@ -7,7 +7,6 @@ const EditProfile = () => {
   const [email, setEmail] = useState('johndoe@example.com');
   const [phone, setPhone] = useState('+1 234 567 890');
   
-  // Handler for saving profile data (this can be updated to include Firebase functionality)
   const handleSave = () => {
     alert('Profile saved');
   };

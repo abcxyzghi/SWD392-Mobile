@@ -22,7 +22,7 @@ const DetailScreen = ({ route }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(`post/${id}`);
+        const response = await api.get(`toy/${id}`);
         setData(response.data); // Update state with fetched data
         setIsFavorite(false); // Reset favorite status
       } catch (error) {
